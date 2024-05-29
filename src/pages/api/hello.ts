@@ -1,6 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-
+//npm run dev
+//..cd (ruturn folder)
+//cd (find files)
 type Data = {
   name: string;
 };

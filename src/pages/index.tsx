@@ -2,6 +2,8 @@ import MyNavbar from "@/components/Navbar";
 import PostCard from "@/components/PostCard";
 import Title from "@/components/Title";
 import { Button } from "@nextui-org/react";
+import { useState } from "react";
+
 
 // justify -> แกนหลัก
 // items -> แกนรอง
@@ -69,32 +71,30 @@ const posts = [
 // Spread operator
 
 export default function Home() {
+
+  let [count, setCount] = useState(1) // 2
+
+  const handleClick = () => {
+    setCount(count + 1);
+  }
+
   return (
     <main>
       <MyNavbar />
 
       <div className="flex flex-col items-center space-y-2 py-2">
-        {/* <PostCard
-          author={post.author}
-          content={post.content}
-          followings={post.followings}
-          followers={post.followers}
-        /> */}
-        {/* {
-          [
-            <PostCard {...posts[0]} />,
-            <PostCard {...posts[1]} />,
-            <PostCard {...posts[2]} />,
-            <PostCard {...posts[3]} />,
-            <PostCard {...posts[4]} />,
-          ]
-        } */}
-        {
-          posts.map((item, index) => {
-            return <PostCard key={index} {...item}/>
-          })
-        }
+        {posts.map((item, index) => {
+          return <PostCard key={index} {...item} />;
+        })}
       </div>
+
+      <div className="flex flex-col items-center">
+        <Button color="primary" onClick={handleClick} >Post</Button>
+        <div>
+          <div>Count: {count}</div>
+        </div>
+      </div>
+
     </main>
   );
 }
