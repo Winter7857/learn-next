@@ -2,6 +2,8 @@ import ConfirmModal from "@/components/ConfirmModal";
 import CreatePostModal from "@/components/CreatePostModal";
 import MyNavbar from "@/components/Navbar";
 import PostCard from "@/components/PostCard";
+import UpdatePostModal from "@/components/UpdatePostModal";
+import usePostStates from "@/hooks/usePostStates";
 import { Post } from "@/types";
 import {
   Button,
@@ -36,12 +38,26 @@ export default function Home() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const selectedPostStates = usePostStates();
+
   const createPostDisclosure = useDisclosure();
   const confirmModalDisclosure = useDisclosure();
+  const updatePostDisclosure = useDisclosure();
 
   const handleDelete = (index: number) => {
     confirmModalDisclosure.onOpen();
     setSelectedIndex(index);
+  };
+
+  const handleEdit = (index: number) => {
+    updatePostDisclosure.onOpen();
+    setSelectedIndex(index);
+    selectedPostStates.setContent(posts[index].content)
+    selectedPostStates.setAvatar(posts[index].author.avatar)
+    selectedPostStates.setName(posts[index].author.name)
+    selectedPostStates.setUsername(posts[index].author.username)
+    selectedPostStates.setFollowings(posts[index].followings)
+    selectedPostStates.setFollowers(posts[index].followers)
   };
 
   const handleConfirmDelete = () => {
@@ -71,6 +87,7 @@ export default function Home() {
             <PostCard
               key={index}
               {...item}
+              handleEdit={() => handleEdit(index)}
               handleDelete={() => handleDelete(index)}
             />
           );
@@ -96,6 +113,12 @@ export default function Home() {
         isOpen={confirmModalDisclosure.isOpen}
         onOpenChange={confirmModalDisclosure.onOpenChange}
         onDelete={handleConfirmDelete}
+      />
+      <UpdatePostModal 
+        isOpen={updatePostDisclosure.isOpen}
+        onOpenChange={updatePostDisclosure.onOpenChange}
+        onSubmit={createPost}
+        {...selectedPostStates}
       />
     </main>
   );
